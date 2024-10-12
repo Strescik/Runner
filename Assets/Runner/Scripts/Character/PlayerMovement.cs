@@ -1,3 +1,5 @@
+using Assets.Runner.Scripts.Barrier;
+using Assets.Runner.Scripts.Map;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +8,7 @@ namespace Assets.Runner.Scripts.Character
 {
     public class PlayerMovement : MonoBehaviour
     {
+
         [SerializeField] private float moveSpeed;
         [SerializeField] private float jumpPower;
         [SerializeField] private float bendDown;
@@ -27,6 +30,7 @@ namespace Assets.Runner.Scripts.Character
             Slip();
         }
 
+       
         private void Runing()
         {
             var runPos = Vector3.forward * moveSpeed;
@@ -88,6 +92,25 @@ namespace Assets.Runner.Scripts.Character
             yield return new WaitForSeconds(1);
 
             transform.localScale = Vector3.one;
+        }
+
+
+        private void OnTriggerExit(Collider other)
+        {
+            Debug.Log("a");
+            if (other.transform.CompareTag("Layer"))
+            {
+                other.GetComponent<BarrierPool>().NewPositionBarrier();
+            }
+            
+        }
+        private void OnCollisionExit(Collision collision)
+        {
+            if (collision.transform.CompareTag("Floor"))
+            {
+                collision.transform.position = new Vector3(0, 0, MapManager.instance.GetNewFloorPositionZ());
+                MapManager.instance.SetFloorCount();
+            }
         }
     }
 }
