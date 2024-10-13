@@ -30,7 +30,7 @@ namespace Assets.Runner.Scripts.Character
             Slip();
         }
 
-       
+
         private void Runing()
         {
             var runPos = Vector3.forward * moveSpeed;
@@ -102,13 +102,10 @@ namespace Assets.Runner.Scripts.Character
             {
                 other.GetComponent<BarrierPool>().NewPositionBarrier();
             }
-            
-        }
-        private void OnCollisionExit(Collision collision)
-        {
-            if (collision.transform.CompareTag("Floor"))
+
+            else if (other.transform.CompareTag("Floor"))
             {
-                collision.transform.position = new Vector3(0, 0, MapManager.instance.GetNewFloorPositionZ());
+                other.transform.parent.position = new Vector3(0, 0, MapManager.instance.GetNewFloorPositionZ());
                 MapManager.instance.SetFloorCount();
             }
         }
