@@ -94,6 +94,15 @@ namespace Assets.Runner.Scripts.Character
             transform.localScale = Vector3.one;
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.transform.CompareTag("Gold"))
+            {
+                GameManager.GameManager.instance.AddGoldPoint(1);
+
+                other.transform.gameObject.SetActive(false);
+            }
+        }
 
         private void OnTriggerExit(Collider other)
         {

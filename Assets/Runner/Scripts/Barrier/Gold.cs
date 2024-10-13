@@ -12,7 +12,6 @@ public class Gold : MonoBehaviour
         var rnd = Random.RandomRange(0, 6);
         if (rnd > 1)
             OpenGold();
-        Debug.Log(rnd);
     }
 
     private void OnDisable()
