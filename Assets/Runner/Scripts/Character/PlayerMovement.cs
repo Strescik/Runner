@@ -20,6 +20,7 @@ namespace Assets.Runner.Scripts.Character
         private void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();
+            Physics.gravity = new Vector3(0, -8.5f, 0);
         }
 
         private void Update()
@@ -49,7 +50,6 @@ namespace Assets.Runner.Scripts.Character
         {
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                //Zýplama durumundaysa oyuncuyu zemine gönderme yapýlacak.
                 StartCoroutine(BendCoroutine());
             }
         }
@@ -89,7 +89,16 @@ namespace Assets.Runner.Scripts.Character
         IEnumerator BendCoroutine()
         {
             transform.localScale = new Vector3(1, bendDown, 1);
-            yield return new WaitForSeconds(1);
+            if (transform.position.y > 0)
+            {
+                Physics.gravity = new Vector3(0, -48, 0);
+                while (transform.position.y > 0)
+                {
+                    yield return null;
+                }
+                Physics.gravity = new Vector3(0, -8.5f, 0);
+            }
+            yield return new WaitForSeconds(.7f);
 
             transform.localScale = Vector3.one;
         }
