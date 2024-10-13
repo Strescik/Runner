@@ -97,12 +97,10 @@ namespace Assets.Runner.Scripts.Character
 
         private void OnTriggerExit(Collider other)
         {
-            Debug.Log("a");
             if (other.transform.CompareTag("Layer"))
             {
                 other.GetComponent<BarrierPool>().NewPositionBarrier();
             }
-
             else if (other.transform.CompareTag("Floor"))
             {
                 other.transform.parent.position = new Vector3(0, 0, MapManager.instance.GetNewFloorPositionZ());
