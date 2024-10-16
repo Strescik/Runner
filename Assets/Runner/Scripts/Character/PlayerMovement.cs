@@ -16,21 +16,29 @@ namespace Assets.Runner.Scripts.Character
         [SerializeField] private float slipSpeed;
 
         private Rigidbody rigidbody;
+        private UIController uiController;
 
         private void Awake()
         {
             rigidbody = GetComponent<Rigidbody>();
+            uiController = GetComponent<UIController>();
             Physics.gravity = new Vector3(0, -8.5f, 0);
         }
 
         private void Update()
         {
-            Runing();
-            Jump();
-            Bend();
-            Slip();
+            if (GameManager.GameManager.instance.GetStartGame())
+            {
+                Runing();
+                Jump();
+                Bend();
+                Slip();
+                GameManager.GameManager.instance.SetScorePoint((int)transform.position.z * 10);
+            }
+            else return;
         }
 
+        public void GoStartPosition() => transform.position = new Vector3(0, 0, -13);
 
         private void Runing()
         {
@@ -123,6 +131,17 @@ namespace Assets.Runner.Scripts.Character
             {
                 other.transform.parent.position = new Vector3(0, 0, MapManager.instance.GetNewFloorPositionZ());
                 MapManager.instance.SetFloorCount();
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.transform.CompareTag("Wall"))
+            {
+                GameManager.GameManager.instance.SetStartGame(false);
+                Debug.Log("Yandý");
+                uiController.SetFnishPanel(true);
+                uiController.SetFnishSoreText();
             }
         }
     }

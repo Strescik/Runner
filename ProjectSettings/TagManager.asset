@@ -7,6 +7,7 @@ TagManager:
   - Layer
   - Floor
   - Gold
+  - Wall
   layers:
   - Default
   - TransparentFX
